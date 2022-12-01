@@ -12,6 +12,7 @@ public class MaxHeap {
         this.heapSize = 0;
         this.H = new int[maxsize];
         this.D = new int[maxsize];
+        this.P = new int[maxsize];
     }
 
     private int parent(int pos) { return (pos - 1) / 2; }
@@ -31,6 +32,8 @@ public class MaxHeap {
         temp = D[i];
         D[i] = D[j];
         D[j] = temp;
+        P[H[i]] = i;
+        P[H[j]] = j;
     }
 
     private void maxHeapify(int k)
@@ -56,6 +59,7 @@ public class MaxHeap {
     {
         H[heapSize] = vertex;
         D[heapSize] = bandwidth;
+        P[vertex] = heapSize;
         // Traverse up and fix violated property
         int current = heapSize;
         while (D[current] > D[parent(current)]) {
@@ -66,12 +70,14 @@ public class MaxHeap {
     }
 
     public void delete(int vertex) {
-        int index = 0;
-        while (index < heapSize && H[index] != vertex) {
-            index++;
-        }
+        int index = P[vertex];
+//        while (index < heapSize && H[index] != vertex) {
+//            index++;
+//        }
+
         H[index] = H[heapSize-1];
         D[index] = D[heapSize-1];
+        P[H[index]] = index; // In some case this degrades the performance
         heapSize--;
         maxHeapify(index);
     }
@@ -85,6 +91,7 @@ public class MaxHeap {
         int popped = H[0];
         H[0] = H[heapSize-1];
         D[0] = D[heapSize-1];
+        P[H[0]] = 0;
         heapSize--;
         maxHeapify(0);
         return popped;
