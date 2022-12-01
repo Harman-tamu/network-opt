@@ -8,7 +8,7 @@ public class MaxBandwidthKrus {
     private static MaxHeapKrus heap;
     private static int[] rank;
     private static int[] parent;
-    private static Graph newGraph;
+    private static Graph mst;
 
     private static int[] color;
     private static int[] parentBFS;
@@ -56,25 +56,24 @@ public class MaxBandwidthKrus {
             rank[i] = 1;
         }
 
-        newGraph = new Graph(graph.getTotalVertices());
+        mst = new Graph(graph.getTotalVertices());
         for (int e = 0; e < graph.getTotalEdges(); e++) {
-            //for (int i = 0; i < heap.getHeapNumber(); i++) {
             Edge edge = heap.extractMax();
-            int U = edge.getStart();
-            int V = edge.getEnd();
-            int R1 = find(U);
-            int R2 = find(V);
-            if (R1 != R2) {
-                newGraph.addEdge(edge.getStart(), edge.getEnd(), edge.getWeight());
-                union(R1, R2);
+            int u = edge.getStart();
+            int v = edge.getEnd();
+            int r1 = find(u);
+            int r2 = find(v);
+            if (r1 != r2) {
+                mst.addEdge(edge.getStart(), edge.getEnd(), edge.getWeight());
+                union(r1, r2);
             }
         }
 
         // Path search using BFS
-        color = new int[newGraph.getTotalVertices()];
-        parentBFS = new int[newGraph.getTotalVertices()];
-        bandwidth = new int[newGraph.getTotalVertices()];
-        for (int v = 0; v < newGraph.getTotalVertices(); v++) {
+        color = new int[mst.getTotalVertices()];
+        parentBFS = new int[mst.getTotalVertices()];
+        bandwidth = new int[mst.getTotalVertices()];
+        for (int v = 0; v < mst.getTotalVertices(); v++) {
             color[v] = Constants.WHITE;
             parentBFS[v] = -1;
             bandwidth[v] = Integer.MAX_VALUE;
@@ -85,7 +84,7 @@ public class MaxBandwidthKrus {
 
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            for (Edge edge : newGraph.getAdjacencyList()[u]) {
+            for (Edge edge : mst.getAdjacencyList()[u]) {
                 int v = edge.getAdjacentVertex(u);
                 if (color[v] == Constants.WHITE) {
                     color[v] = Constants.GREY;
@@ -96,9 +95,6 @@ public class MaxBandwidthKrus {
                         queue.clear();
                         break;
                     }
-                } else if (color[v] == Constants.GREY && bandwidth[v] < Math.min(bandwidth[u], edge.getWeight())) {
-                    parentBFS[v] = u;
-                    bandwidth[v] = Math.min(bandwidth[u], edge.getWeight());
                 }
             }
             color[u] = Constants.BLACK;
