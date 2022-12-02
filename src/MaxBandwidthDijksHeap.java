@@ -55,7 +55,7 @@ public class MaxBandwidthDijksHeap {
             }
         }
         // Can use this if need to trace Path
-//        tracePath(parent, target);
+       //  tracePath(parent, target);
         return bandwidth[target];
     }
 
@@ -71,6 +71,7 @@ public class MaxBandwidthDijksHeap {
             System.out.print(path.pop() + " -> ");
             pathLength++;
         }
-        System.out.println("Path Lenght: " + pathLength);
+        System.out.println();
+        System.out.println("Path Length: " + pathLength);
     }
 }
