@@ -116,6 +116,7 @@ public class MaxBandwidthKrus {
             System.out.print(path.pop() + " -> ");
             pathLength++;
         }
-        System.out.println("Path Lenght: " + pathLength);
+        System.out.println();
+        System.out.println("Path Length: " + pathLength);
     }
 }

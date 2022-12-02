@@ -74,7 +74,6 @@ public class MaxHeap {
 //        while (index < heapSize && H[index] != vertex) {
 //            index++;
 //        }
-
         H[index] = H[heapSize-1];
         D[index] = D[heapSize-1];
         P[H[index]] = index; // In some case this degrades the performance
@@ -88,13 +87,13 @@ public class MaxHeap {
 
     public int extractMax()
     {
-        int popped = H[0];
+        int max = H[0];
         H[0] = H[heapSize-1];
         D[0] = D[heapSize-1];
         P[H[0]] = 0;
         heapSize--;
         maxHeapify(0);
-        return popped;
+        return max;
     }
 
 
